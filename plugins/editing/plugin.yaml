@@ -1,0 +1,69 @@
+id: editing
+name: Editing and Pages
+version: 1.0.0
+description: Copy, paste, undo, save and print, and moving through a page; standard Windows shortcuts sent to the focused window.
+entrypoint: plugin.py
+
+permissions:
+  - keyboard.shortcut
+
+commands:
+  - intent: edit.copy
+    description: Copy the selection
+    risk: low
+    aliases: [copy, copy this, copy that]
+
+  - intent: edit.paste
+    description: Paste
+    risk: low
+    aliases: [paste, paste it, paste here]
+
+  - intent: edit.cut
+    description: Cut the selection
+    risk: low
+    aliases: [cut, cut this]
+
+  - intent: edit.undo
+    description: Undo the last change
+    risk: low
+    aliases: [undo, undo that]
+
+  - intent: edit.redo
+    description: Redo the last undone change
+    risk: low
+    aliases: [redo, redo that]
+
+  - intent: edit.select_all
+    description: Select everything
+    risk: low
+    aliases: [select all, select everything]
+
+  - intent: edit.save
+    description: Save the current file
+    risk: low
+    aliases: [save, save this, save the file]
+
+  - intent: edit.print
+    description: Open the print dialog
+    risk: low
+    aliases: [print, print this, print this page]
+
+  - intent: page.down
+    description: Scroll down one screen
+    risk: low
+    aliases: [scroll down, page down]
+
+  - intent: page.up
+    description: Scroll up one screen
+    risk: low
+    aliases: [scroll up, page up]
+
+  - intent: page.top
+    description: Jump to the top of the page or document
+    risk: low
+    aliases: [go to the top, scroll to the top, top of the page]
+
+  - intent: page.bottom
+    description: Jump to the bottom of the page or document
+    risk: low
+    aliases: [go to the bottom, scroll to the bottom, bottom of the page]

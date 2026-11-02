@@ -1,0 +1,87 @@
+# Application defaults. Committed to the repository.
+# User overrides go in config/user.yaml (gitignored) or VOICE_AGENT__SECTION__KEY env vars.
+# Secrets NEVER go in this file.
+
+app:
+  name: Voice PC Agent
+  start_minimized: true
+  emergency_stop_hotkey: ctrl+alt+space
+
+audio:
+  sample_rate: 16000
+  channels: 1
+  frame_ms: 30
+  command_timeout_seconds: 8
+  silence_timeout_ms: 900
+  vad_energy_floor: 0.01      # RMS below this is never speech; raise for noisy rooms/mics
+  vad_aggressiveness: 2       # WebRTC VAD 0 (lenient) .. 3 (strict)
+  input_device: null          # null = system default
+
+wakeword:
+  enabled: true
+  # phrase: say the wake phrase to start; every sentence is then a command until the sleep
+  #   phrase. Any words work: the speech model hears them. Asleep, speech is transcribed on
+  #   this PC only to look for the wake phrase, and otherwise dropped.
+  # openwakeword: say the `model` wake word ("Hey Jarvis") before each command.
+  engine: phrase
+  wake_phrase: wake up ev
+  sleep_phrase: sleep ev
+  model: hey_jarvis
+  threshold: 0.6
+  cooldown_ms: 1500
+
+speech:
+  provider: faster_whisper
+  # base.en: English-only, same size and speed as base, and it mishears fewer short commands
+  # (97% vs 96% of spoken command phrases). small.en is more accurate but ~3x slower on a CPU.
+  model: base.en
+  # When base.en's words are unclear (no known command, and Whisper unsure, or nearly the
+  # wake phrase), the same audio is listened to again with this larger model: ~3 s more,
+  # only then. It hears accents and fast speech much better. null: never.
+  careful_model: small.en
+  device: cpu
+  compute_type: int8
+  language: en
+  beam_size: 1
+
+nlu:
+  fuzzy_threshold: 0.88
+  dedupe_window_ms: 1200
+
+llm:
+  enabled: true
+  provider: groq
+  # Verified against Groq's live catalogue 2026-10-20 — see docs/adr/0002. Re-check on deprecations.
+  model: qwen/qwen3.8-27b
+  reasoning_effort: none
+  timeout_seconds: 4
+  max_retries: 1
+  # Groq's free tier allows 8000 tokens a minute; a request is ~1400. Above this the agent
+  # refuses on your PC rather than earn a 429 and a 30 s pause for every command after it.
+  max_calls_per_minute: 5
+  circuit_breaker_failures: 3
+  fallback_to_rules: true
+
+safety:
+  reject_unknown_intents: true
+  require_confirmation_for_destructive_actions: true
+  confirmation_timeout_seconds: 10
+  minimum_confidence: 0.55
+  allow_arbitrary_shell: false     # must stay false; see CLAUDE.md invariant 1
+  allow_arbitrary_python: false
+
+privacy:
+  store_audio: false
+  store_transcripts: false
+  redact_sensitive_logs: true
+  audit_log_enabled: true
+
+plugins:
+  # Only these folders under plugins/ are loaded. Plugin code runs in-process, so a
+  # folder dropped into plugins/ is discovered but never executed until listed here.
+  enabled: [browser, media, window-management, editing, desktop, zoom]
+
+ui:
+  show_microphone_indicator: true
+  show_toast_on_action: false   # a notification after every command; the indicator shows state
+  sounds: true                  # a short chime when it wakes up, another when it goes to sleep

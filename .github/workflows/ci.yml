@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gate:
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash # stops at the first failing command; pwsh only checks a step's last one
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Lint
+        run: |
+          ruff check .
+          ruff format --check .
+
+      - name: Types
+        run: mypy src
+
+      - name: Tests
+        run: python -m pytest -q --cov=voice_agent --cov-report=term-missing
+
+      - name: Soak
+        run: python -m pytest -q -m slow
+
+      - name: No network or microphone in tests
+        shell: bash
+        run: |
+          # The suite must never reach the internet or open a device.
+          ! grep -rnE "requests\.|httpx\.|urlopen|sounddevice\.(InputStream|rec)" tests/ \
+            || (echo "tests must not use network or audio devices" && exit 1)

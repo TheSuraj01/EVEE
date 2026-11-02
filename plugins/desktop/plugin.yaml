@@ -1,0 +1,69 @@
+id: desktop
+name: Windows Desktop
+version: 1.0.0
+description: Windows' own shortcuts for the desktop, File Explorer, Settings, screenshots and virtual desktops.
+entrypoint: plugin.py
+
+permissions:
+  - keyboard.shortcut
+
+commands:
+  - intent: desktop.show
+    description: Show the desktop
+    risk: low
+    aliases: [show desktop, show the desktop, go to desktop]
+
+  - intent: desktop.minimize_all
+    description: Minimise every window
+    risk: low
+    aliases: [minimize everything, minimise everything, minimize all windows]
+
+  - intent: desktop.start_menu
+    description: Open the Start menu
+    risk: low
+    aliases: [open start menu, start menu, open start]
+
+  - intent: desktop.file_explorer
+    description: Open File Explorer
+    risk: low
+    aliases: [open file explorer, open my files, open explorer]
+
+  - intent: desktop.settings
+    description: Open Windows Settings
+    risk: low
+    aliases: [open windows settings, windows settings]
+
+  - intent: desktop.screenshot
+    description: Take a screenshot of part of the screen
+    risk: low
+    aliases: [take a screenshot, screenshot, snip the screen]
+
+  - intent: desktop.task_manager
+    description: Open Task Manager
+    risk: low
+    aliases: [open task manager, task manager]
+
+  - intent: desktop.task_view
+    description: Show all open windows
+    risk: low
+    aliases: [task view, show all windows]
+
+  - intent: desktop.next_desktop
+    description: Switch to the next virtual desktop
+    risk: low
+    aliases: [next desktop]
+
+  - intent: desktop.previous_desktop
+    description: Switch to the previous virtual desktop
+    risk: low
+    aliases: [previous desktop]
+
+  - intent: desktop.notifications
+    description: Show notifications
+    risk: low
+    aliases: [show notifications, open notifications]
+
+  - intent: desktop.clipboard
+    description: Show clipboard history
+    risk: low
+    aliases: [clipboard history, show clipboard]

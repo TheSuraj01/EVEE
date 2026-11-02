@@ -1,0 +1,63 @@
+id: media
+name: Media Controls
+version: 1.0.0
+description: Playback and volume via the global media keys; seeking via arrow keys.
+entrypoint: plugin.py
+
+# media.control for the media keys; keyboard.shortcut because seeking sends arrow keys to
+# the focused player (there is no global "seek" key).
+permissions:
+  - media.control
+  - keyboard.shortcut
+
+commands:
+  - intent: media.play_pause
+    description: Play or pause the current media
+    risk: low
+    aliases: [play, pause, resume, play pause, pause the video, play the video, resume the video,
+              pause the music, play the music, resume playing]
+
+  - intent: media.seek_forward
+    description: Skip forward in the current media
+    risk: low
+    aliases: [seek forward, skip forward, fast forward, skip ahead, jump ahead, jump forward]
+    argument: { name: seconds, required: false, minimum: 1, maximum: 600, default: 10 }
+
+  - intent: media.seek_backward
+    description: Skip backward in the current media
+    risk: low
+    aliases: [seek back, seek backward, skip back, rewind, skip backward, jump back]
+    argument: { name: seconds, required: false, minimum: 1, maximum: 600, default: 10 }
+
+  - intent: media.volume_up
+    description: Raise the volume
+    risk: low
+    aliases: [volume up, louder, turn it up, turn up the volume, turn the volume up,
+              increase the volume, raise the volume, make it louder]
+
+  - intent: media.volume_down
+    description: Lower the volume
+    risk: low
+    aliases: [volume down, quieter, turn it down, turn down the volume, turn the volume down,
+              decrease the volume, lower the volume, reduce the volume, make it quieter]
+
+  - intent: media.mute
+    description: Mute or unmute the sound
+    risk: low
+    aliases: [mute, unmute, silence, mute the sound, unmute the sound, mute the volume,
+              mute audio, unmute audio]
+
+  - intent: media.next_track
+    description: Skip to the next song or track
+    risk: low
+    aliases: [next song, next track, skip song, skip this song, skip track, play the next song]
+
+  - intent: media.previous_track
+    description: Go back to the previous song or track
+    risk: low
+    aliases: [previous song, previous track, last song, play the previous song]
+
+  - intent: media.stop
+    description: Stop playback
+    risk: low
+    aliases: [stop the music, stop playback, stop playing]

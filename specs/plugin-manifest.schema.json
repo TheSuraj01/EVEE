@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voice-pc-agent/specs/plugin-manifest.schema.json",
+  "title": "Plugin manifest (plugin.yaml)",
+  "description": "A plugin DECLARES capabilities here. The host GRANTS and ENFORCES them at execution time. A manifest is never trusted.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "version", "permissions", "commands"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,31}$" },
+    "name": { "type": "string", "maxLength": 64 },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "description": { "type": "string", "maxLength": 256 },
+    "author": { "type": "string" },
+    "entrypoint": { "type": "string", "default": "plugin.py" },
+    "permissions": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "keyboard.shortcut",
+          "keyboard.type",
+          "window.manage",
+          "media.control",
+          "clipboard.read",
+          "clipboard.write"
+        ]
+      }
+    },
+    "commands": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["intent", "risk"],
+        "properties": {
+          "intent": { "type": "string", "pattern": "^[a-z][a-z0-9_]*\\.[a-z][a-z0-9_]*$" },
+          "description": { "type": "string", "maxLength": 160 },
+          "risk": { "enum": ["low", "medium", "high"] },
+          "aliases": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+          "argument": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name"],
+            "properties": {
+              "name": { "type": "string" },
+              "required": { "type": "boolean", "default": false },
+              "minimum": { "type": "integer", "default": 0 },
+              "maximum": { "type": "integer", "default": 600 },
+              "default": { "type": ["integer", "null"] }
+            }
+          }
+        }
+      }
+    }
+  }
+}

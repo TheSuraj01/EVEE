@@ -1,0 +1,60 @@
+# Built-in commands: the ones that belong to the agent itself, not to a plugin.
+#
+# Contract: every intent here is simultaneously
+#   (a) the allowlist the policy engine checks against, and
+#   (b) part of the enum offered to the cloud model.
+# Browser, media and window commands come from the plugins enabled in config
+# (plugins/*/plugin.yaml). The registry built from both is the single source of truth: an
+# intent is defined in exactly one place, and a duplicate is refused at startup.
+
+commands:
+  - intent: ui.exit_fullscreen
+    description: Leave full-screen mode
+    risk: low
+    permissions: [keyboard.shortcut]
+    aliases:
+      - exit full screen
+      - leave full screen
+      - get me out of full screen
+      - get out of full screen
+      - close full screen
+      - escape
+      - press escape
+
+  - intent: ui.enter_fullscreen
+    description: Enter full-screen mode
+    risk: low
+    permissions: [keyboard.shortcut]
+    aliases:
+      - full screen
+      - go full screen
+      - make it full screen
+      - enter full screen
+
+  - intent: system.no_action
+    description: Do nothing; used when the utterance is not a command
+    risk: low
+    aliases: []
+
+  # Only the cloud model resolves this ("open YouTube in a new tab" -> https://www.youtube.com);
+  # the policy engine opens nothing but a public https address. No phrases: an address is
+  # not something a phrase table can recognise.
+  - intent: web.open
+    description: Open a website in a new browser tab
+    risk: low
+    permissions: [web.open]
+    text: { kind: url }
+    aliases: []
+
+  # High risk: always a Yes/No first, so background speech can never sleep the PC.
+  - intent: system.sleep
+    description: Put the PC to sleep
+    risk: high
+    permissions: [power.sleep]
+    aliases:
+      - put the pc to sleep
+      - put the computer to sleep
+      - sleep the pc
+      - sleep the computer
+      - sleep pc
+      - sleep computer

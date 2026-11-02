@@ -1,0 +1,42 @@
+version: 1
+disable_existing_loggers: false
+
+filters:
+  redaction:
+    (): voice_agent.observability.logging.RedactionFilter
+
+formatters:
+  console:
+    format: "%(asctime)s %(levelname)-7s %(name)-28s %(message)s"
+    datefmt: "%H:%M:%S"
+  json:
+    (): voice_agent.observability.logging.JsonFormatter
+
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: INFO
+    formatter: console
+    filters: [redaction]
+    stream: ext://sys.stdout
+  file:
+    class: logging.handlers.RotatingFileHandler
+    level: DEBUG
+    formatter: json
+    filters: [redaction]
+    filename: logs/voice-agent.log
+    maxBytes: 2097152
+    backupCount: 3
+    encoding: utf-8
+
+root:
+  level: INFO
+  handlers: [console, file]
+
+loggers:
+  voice_agent.audio:
+    level: INFO
+  voice_agent.llm:
+    level: INFO
+  voice_agent.safety:
+    level: DEBUG

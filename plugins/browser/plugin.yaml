@@ -1,0 +1,66 @@
+id: browser
+name: Browser Controls
+version: 1.0.0
+description: Tabs, pages and navigation; the same shortcuts in Chrome, Edge and Firefox on Windows.
+entrypoint: plugin.py
+
+permissions:
+  - keyboard.shortcut
+
+commands:
+  - intent: browser.next_tab
+    description: Switch to the next browser tab
+    risk: low
+    aliases: [next tab, switch to next tab, go to the next tab, move to the next tab]
+
+  - intent: browser.previous_tab
+    description: Switch to the previous browser tab
+    risk: low
+    aliases: [previous tab, last tab, go back a tab, go to the previous tab,
+              switch to the previous tab]
+
+  - intent: browser.close_tab
+    description: Close the current browser tab
+    risk: medium
+    aliases: [close this tab, close the tab, close current tab]
+
+  - intent: browser.reopen_tab
+    description: Reopen the most recently closed browser tab
+    risk: low
+    aliases: [reopen tab, undo close tab, bring that tab back, reopen the closed tab,
+              reopen the last tab]
+
+  - intent: browser.new_tab
+    description: Open a new browser tab
+    risk: low
+    aliases: [new tab, open a new tab]
+
+  - intent: browser.new_window
+    description: Open a new browser window
+    risk: low
+    aliases: [open a new window, new browser window]
+
+  - intent: browser.refresh
+    description: Reload the current page
+    risk: low
+    aliases: [refresh, reload, refresh the page, reload the page]
+
+  - intent: browser.back
+    description: Go back to the previous page
+    risk: low
+    aliases: [go back, previous page, back page, go to the previous page]
+
+  - intent: browser.forward
+    description: Go forward to the next page
+    risk: low
+    aliases: [go forward, next page, forward page, go to the next page]
+
+  - intent: browser.find
+    description: Find text on the page
+    risk: low
+    aliases: [find on page, search this page, find]
+
+  - intent: browser.bookmark
+    description: Bookmark the current page
+    risk: low
+    aliases: [bookmark this page, bookmark this, add a bookmark]

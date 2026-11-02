@@ -1,0 +1,26 @@
+# The example plugin from docs/plugin-development.md, enabled by default.
+id: zoom
+name: Zoom
+version: 1.0.0
+description: Zoom the current page or document in, out, or back to 100%.
+author: Voice PC Agent maintainers
+entrypoint: plugin.py
+
+permissions:
+  - keyboard.shortcut
+
+commands:
+  - intent: zoom.in
+    description: Zoom in
+    risk: low
+    aliases: [zoom in, increase zoom, enlarge text]
+
+  - intent: zoom.out
+    description: Zoom out
+    risk: low
+    aliases: [zoom out, decrease zoom, shrink text]
+
+  - intent: zoom.reset
+    description: Reset the zoom to 100%
+    risk: low
+    aliases: [reset zoom, normal size, actual size]

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://voice-pc-agent/specs/intent-proposal.schema.json",
+  "title": "IntentProposal",
+  "description": "The ONLY shape a resolver may return. The intent enum is generated at runtime from CommandRegistry.intents(); the placeholder below is illustrative and must never be hand-maintained in code.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["intent", "argument_seconds", "requires_confirmation", "confidence"],
+  "properties": {
+    "intent": {
+      "type": "string",
+      "description": "Runtime enum from the command registry.",
+      "examples": ["browser.next_tab", "media.seek_forward", "system.no_action"]
+    },
+    "argument_seconds": {
+      "type": ["integer", "null"],
+      "minimum": 1,
+      "maximum": 600,
+      "description": "Only for commands with an ArgumentSpec. Bounds re-checked by the policy engine."
+    },
+    "requires_confirmation": { "type": "boolean" },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+  }
+}
